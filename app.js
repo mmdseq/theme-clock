@@ -32,59 +32,67 @@ const months = [
 
 toggleEl.addEventListener("click", (e) => {
   const html = document.querySelector("html");
-
-  if (e.target.innerText === "Dark mode") {
-    e.target.innerText = "Light mode";
-    html.classList.add("dark");
-  } else {
-    e.target.innerText = "Dark mode";
+  if (html.classList.contains("dark")) {
     html.classList.remove("dark");
+    e.target.innerHTML = "Dark mode";
+  } else {
+    html.classList.add("dark");
+    e.target.innerHTML = "Light mode";
   }
 });
 
-setTime();
-
-setInterval(() => setTime(), 1000);
-
 function setTime() {
   const time = new Date();
-
-  const hour = time.getHours();
-  const hoursForClock = hour % 12;
-  const minute = time.getMinutes();
-  const second = time.getSeconds();
-  const date = time.getDate();
-  const day = time.getDay();
   const month = time.getMonth();
+  const day = time.getDay();
+  const hours = time.getHours();
+  const date = time.getDate();
+  const hoursForClock = hours % 12;
+  const minutes = time.getMinutes();
+  const seconds = time.getSeconds();
+  const ampm = hours <= 12 ? `AM` : `PM`;
 
-  hourEl.style.transform = `translate(0,-100%) rotate(${scale(
+  console.log(hoursForClock);
+
+  hourEl.style.transform = `translate(-50%,-100%) rotate(${scale(
     hoursForClock,
     0,
     11,
     0,
     360
   )}deg)`;
-  minuteEl.style.transform = `translate(0,-100%) rotate(${scale(
-    minute,
-    0,
-    59,
-    0,
-    360
-  )}deg)`;
-  secondEl.style.transform = `translate(0,-100%) rotate(${scale(
-    second,
+
+  minuteEl.style.transform = `translate(-50%,-100%) rotate(${scale(
+    minutes,
     0,
     59,
     0,
     360
   )}deg)`;
 
+  secondEl.style.transform = `translate(-50%,-100%) rotate(${scale(
+    seconds,
+    0,
+    59,
+    0,
+    360
+  )}deg)`;
 
-  timeEl.innerHTML=`${hoursForClock}:${minutes < 10 ? `0${minutes}`:minutes} ${ampm}`;
+  timeEl.innerHTML = `${hoursForClock}:${
+    minutes < 10 ? `0${minutes}` : minutes
+  } ${ampm}`;
 
-  dateEl.innerHTML = `${days[day]}, ${months[month]} <spam class="circle">${date}</spam>`
-
+  dateEl.innerHTML = `${days[day]}, ${months[month]} <spam class="circle">${date}</spam>`;
 }
+
+setTime();
+
+// setInterval(setTime,1000)
+setInterval(() => {
+  setTime();
+}, 1000);
+
+// https://stackoverflow.com/questions/10756313/javascript-jquery-map-a-range-of-numbers-to-another-range-of-numbers
 
 function scale(number, inMin, inMax, outMin, outMax) {
   return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;

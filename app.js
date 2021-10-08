@@ -78,6 +78,12 @@ function setTime() {
     0,
     360
   )}deg)`;
+
+
+  timeEl.innerHTML=`${hoursForClock}:${minutes < 10 ? `0${minutes}`:minutes} ${ampm}`;
+
+  dateEl.innerHTML = `${days[day]}, ${months[month]} <spam class="circle">${date}</spam>`
+
 }
 
 function scale(number, inMin, inMax, outMin, outMax) {
